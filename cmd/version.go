@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/harry-hov/gnopls/internal/version"
+	"github.com/gnolang/gnopls/internal/version"
 	"github.com/spf13/cobra"
 )
 

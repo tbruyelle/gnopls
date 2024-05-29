@@ -1,8 +1,8 @@
 # `gnopls`, the Gno language server
 
-![Build & Test](https://github.com/harry-hov/gnopls/actions/workflows/go.yml/badge.svg)
+![Build & Test](https://github.com/gnolang/gnopls/actions/workflows/go.yml/badge.svg)
 
-`gnopls` (pronounced "Gno please") is the unofficial Gno [language server]. It provides IDE features to any [LSP]-compatible editor.
+`gnopls` (pronounced "Gno please") is the Gno [language server]. It provides IDE features to any [LSP]-compatible editor.
 
 ## Installation
 
@@ -11,12 +11,12 @@ command:
 
 - Using `go install`
     ```sh
-    go install github.com/harry-hov/gnopls@latest
+    go install github.com/gnolang/gnopls@latest
     ```
 
 - From source code
     ```sh
-    git clone https://github.com/harry-hov/gnopls.git
+    git clone https://github.com/gnolang/gnopls.git
     cd gnopls
     make install
     ```

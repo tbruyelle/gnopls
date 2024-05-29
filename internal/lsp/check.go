@@ -16,7 +16,7 @@ import (
 	"strings"
 
 	"github.com/gnolang/gno/gnovm/pkg/gnomod"
-	"github.com/harry-hov/gnopls/internal/env"
+	"github.com/gnolang/gnopls/internal/env"
 	"go.uber.org/multierr"
 )
 

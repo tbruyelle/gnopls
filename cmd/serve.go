@@ -4,8 +4,8 @@ import (
 	"log/slog"
 	"os"
 
-	"github.com/harry-hov/gnopls/internal/env"
-	"github.com/harry-hov/gnopls/internal/lsp"
+	"github.com/gnolang/gnopls/internal/env"
+	"github.com/gnolang/gnopls/internal/lsp"
 	"github.com/spf13/cobra"
 )
 

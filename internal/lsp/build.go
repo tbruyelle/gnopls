@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/harry-hov/gnopls/internal/tools"
+	"github.com/gnolang/gnopls/internal/tools"
 )
 
 type ErrorInfo struct {

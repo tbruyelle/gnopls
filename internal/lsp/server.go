@@ -10,9 +10,9 @@ import (
 	"go.lsp.dev/jsonrpc2"
 	"go.lsp.dev/protocol"
 
-	"github.com/harry-hov/gnopls/internal/env"
-	"github.com/harry-hov/gnopls/internal/tools"
-	"github.com/harry-hov/gnopls/internal/version"
+	"github.com/gnolang/gnopls/internal/env"
+	"github.com/gnolang/gnopls/internal/tools"
+	"github.com/gnolang/gnopls/internal/version"
 )
 
 type server struct {

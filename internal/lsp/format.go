@@ -7,7 +7,7 @@ import (
 	"log/slog"
 	"math"
 
-	"github.com/harry-hov/gnopls/internal/tools"
+	"github.com/gnolang/gnopls/internal/tools"
 
 	"go.lsp.dev/jsonrpc2"
 	"go.lsp.dev/protocol"

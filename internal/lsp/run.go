@@ -6,7 +6,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/harry-hov/gnopls/internal/env"
+	"github.com/gnolang/gnopls/internal/env"
 	"go.lsp.dev/jsonrpc2"
 	"go.lsp.dev/pkg/fakenet"
 )

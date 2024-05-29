@@ -15,7 +15,7 @@ func getLatestReleaseTag(ctx context.Context) (string, error) {
 	latest, _, err := github.
 		NewClient(nil).
 		Repositories.
-		GetLatestRelease(ctx, "harry-hov", "gnopls")
+		GetLatestRelease(ctx, "gnolang", "gnopls")
 	if err != nil {
 		return "", err
 	}
