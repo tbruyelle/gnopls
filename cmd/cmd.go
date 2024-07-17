@@ -18,11 +18,11 @@ func GnoplsCmd() *cobra.Command {
 		SilenceUsage:       true,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			slog.Info("Initializing Server...")
-			env := &env.Env{
+			procEnv := &env.Env{
 				GNOROOT: os.Getenv("GNOROOT"),
 				GNOHOME: env.GnoHome(),
 			}
-			err := lsp.RunServer(cmd.Context(), env)
+			err := lsp.RunServer(cmd.Context(), procEnv)
 			if err != nil {
 				return err
 			}
