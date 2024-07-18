@@ -20,6 +20,7 @@ type ChannelReader struct {
 func NewChannelReader(source <-chan []byte, cancelFn context.CancelFunc) *ChannelReader {
 	return &ChannelReader{
 		source: source,
+		cancelFn: cancelFn,
 	}
 }
 
