@@ -30,11 +30,12 @@ const proxy = Comlink.wrap<LSPWorker>(lspWorker);
 // MessagePort should be passed as a transferable object.
 await proxy.connect(Comlink.transfer({ port: serverPort }, [ serverPort ]))
 
-// Setup LSP client using a client port.
+// Feel free to pick up any LSP client to library as long as it supports way to specify custom message transports.
+// This example uses LSP client used by Monaco editor and VSCode.
 const reader = new BrowserMessageReader(clientPort)
 const writer = new BrowserMessageWriter(clientPort)
 
-const lspClient =   new MonacoLanguageClient({
+const lspClient = new MonacoLanguageClient({
     name: 'gnopls-lsp-client',
     clientOptions: {
       // use a language id as a document selector
