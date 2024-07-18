@@ -28,6 +28,10 @@ func registerRequestListener(ctx context.Context) (io.ReadCloser, error) {
 
 	inputEvents := make(chan []byte, msgBufferSize)
 	callback := js.FuncOf(func(this js.Value, args []js.Value) any {
+		if len(args) == 0 {
+			// this is the only way to throw a JS exception.
+			panic("missing argument")
+		}
 		message := args[0].String()
 		inputEvents <- []byte(message)
 		return nil
