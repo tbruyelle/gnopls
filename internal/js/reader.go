@@ -51,13 +51,11 @@ func (listener *ChannelReader) Close() error {
 }
 
 func (listener *ChannelReader) fetchMore() error {
-	select {
-	case message, ok := <-listener.source:
-		if !ok {
-			return io.EOF
-		}
-
-		listener.buff = message
-		return nil
+	message, ok := <-listener.source
+	if !ok {
+		return io.EOF
 	}
+
+	listener.buff = message
+	return nil
 }
