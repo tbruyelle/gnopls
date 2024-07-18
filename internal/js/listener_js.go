@@ -50,11 +50,9 @@ func registerRequestListener(ctx context.Context) (io.ReadCloser, error) {
 	registerCallback(callbackID)
 
 	go func() {
-		select {
-		case <-chanCtx.Done():
-			callback.Release()
-			close(inputEvents)
-		}
+		<-chanCtx.Done()
+		callback.Release()
+		close(inputEvents)
 	}()
 
 	reader := NewChannelReader(inputEvents, cancelFn)
