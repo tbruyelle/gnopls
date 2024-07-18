@@ -20,7 +20,7 @@ const loadString = (mem: DataView, addr: number) => {
  */
 interface ExtendedGo extends Go {
   /**
-   * Manually calls Go functions exposed to JS.
+   * Creates a callable JS function from Go's callback ID.
    *
    * This is the only way to call exposed function without adding it to 'globalThis' property.
    * Will be replaced when '//go:wasmexport' is available.
