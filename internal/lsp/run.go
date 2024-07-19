@@ -4,18 +4,21 @@ import (
 	"context"
 	"errors"
 	"io"
-	"os"
 
 	"github.com/gnolang/gnopls/internal/env"
 	"go.lsp.dev/jsonrpc2"
-	"go.lsp.dev/pkg/fakenet"
 )
 
-func RunServer(ctx context.Context, env *env.Env) error {
-	conn := jsonrpc2.NewConn(jsonrpc2.NewStream(fakenet.NewConn("stdio", os.Stdin, os.Stdout)))
-	handler := BuildServerHandler(conn, env)
+func RunServer(ctx context.Context, e *env.Env) error {
+	conn, err := env.GetConnection(ctx)
+	if err != nil {
+		return err
+	}
+
+	rpcConn := jsonrpc2.NewConn(jsonrpc2.NewStream(conn))
+	handler := BuildServerHandler(rpcConn, e)
 	stream := jsonrpc2.HandlerServer(handler)
-	err := stream.ServeStream(ctx, conn)
+	err = stream.ServeStream(ctx, rpcConn)
 	if errors.Is(err, io.EOF) {
 		return nil
 	}
