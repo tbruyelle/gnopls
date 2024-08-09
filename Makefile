@@ -3,7 +3,7 @@ PROJECT_NAME = gnopls
 BUILD_FLAGS = -mod=readonly -ldflags='$(LD_FLAGS)'
 BUILD_FOLDER = ./build
 
-.PHONY: install build clean
+.PHONY: install build clean gen
 
 ## install: Install the binary.
 install:
@@ -22,3 +22,7 @@ clean:
 	@echo Cleaning build cache...
 	@-rm -rf $(BUILD_FOLDER) 2> /dev/null
 	@go clean ./...
+
+## gen: runs "go:generate" across all Go files
+gen:
+	@find . -name '*.go' -print0 | xargs -0 grep -l '//go:generate' | xargs -I {} go generate {}
