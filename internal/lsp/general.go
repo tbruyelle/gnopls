@@ -7,6 +7,7 @@ import (
 	"log/slog"
 	"path/filepath"
 
+	"github.com/gnolang/gnopls/internal/tools"
 	"go.lsp.dev/jsonrpc2"
 	"go.lsp.dev/protocol"
 )
@@ -26,7 +27,11 @@ func (s *server) DidOpen(ctx context.Context, reply jsonrpc2.Replier, req jsonrp
 
 	slog.Info("open " + string(params.TextDocument.URI.Filename()))
 	s.UpdateCache(filepath.Dir(string(params.TextDocument.URI.Filename())))
-	notification := s.publishDiagnostics(ctx, s.conn, file)
+	diagnostics, err := s.getTranspileDiagnostics(file)
+	if err != nil {
+		return sendParseError(ctx, reply, err)
+	}
+	notification := s.publishDiagnostics(ctx, s.conn, file, diagnostics)
 	return reply(ctx, notification, nil)
 }
 
@@ -76,6 +81,20 @@ func (s *server) DidSave(ctx context.Context, reply jsonrpc2.Replier, req jsonrp
 
 	slog.Info("save " + string(uri.Filename()))
 	s.UpdateCache(filepath.Dir(string(params.TextDocument.URI.Filename())))
-	notification := s.publishDiagnostics(ctx, s.conn, file)
+	diagnostics := []protocol.Diagnostic{}
+	transpileDiags, err := s.getTranspileDiagnostics(file)
+	if err == nil {
+		diagnostics = append(diagnostics, transpileDiags...)
+	} else {
+		slog.Error("TRANSPILE", "error", err)
+	}
+	diags, err := tools.Lint(ctx, s.conn, params.Text, uri)
+	if err == nil {
+		diagnostics = append(diagnostics, diags...)
+	} else {
+		slog.Error("LINT", "error", err)
+	}
+
+	notification := s.publishDiagnostics(ctx, s.conn, file, diagnostics)
 	return reply(ctx, notification, nil)
 }
