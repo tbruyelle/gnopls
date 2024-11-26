@@ -1,0 +1,72 @@
+# Init phase
+lsp initialize input/initialize.json
+lsp initialized input/initialized.json
+lsp workspace/didChangeConfiguration input/didChangeConfiguration.json
+lsp textDocument/didOpen input/didOpen_x.json
+
+lsp textDocument/completion input/completion_x.json
+cmp output/completion_x.json expected/completion_x.json
+-- x.gno --
+package foo
+
+type MyType struct {
+	Foo int
+	Bar string
+	Baz bool
+}
+
+func NewMyType() MyType {}
+
+func Hello() {
+	NewMyType().B // completion here, should return some fields of MyType
+}
+-- input/initialize.json --
+{
+	"rootUri": "file://$WORK"
+}
+-- input/initialized.json --
+{}
+-- input/didChangeConfiguration.json --
+{
+	"settings": {
+		"gno":              "$GOBIN/gno",
+		"gopls":            "$GOBIN/gopls",
+		"root":             "$GNOPATH",
+		"precompileOnSave": true,
+		"buildOnSave":      true
+	}
+}
+-- input/didOpen_x.json --
+{
+	"textDocument": {
+		"uri":"file://$WORK/x.gno",
+		"text":"${FILE_x.gno}"
+	}
+}
+-- input/completion_x.json --
+{
+	"textDocument": {
+		"uri":"file://$WORK/x.gno"
+	},
+	"position": {
+		"character": 14,
+		"line": 11
+	}
+}
+-- expected/completion_x.json --
+[
+  {
+    "detail": "Bar string",
+    "documentation": "",
+    "insertText": "Bar",
+    "kind": 5,
+    "label": "Bar"
+  },
+  {
+    "detail": "Baz bool",
+    "documentation": "",
+    "insertText": "Baz",
+    "kind": 5,
+    "label": "Baz"
+  }
+]
