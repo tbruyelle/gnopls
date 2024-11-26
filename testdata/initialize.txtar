@@ -25,26 +25,19 @@ cmp output/didChangeConfiguration.json expected/didChangeConfiguration.json
 -- expected/initialize.json --
 {
   "capabilities": {
-    "codeLensProvider": {
-      "resolveProvider": true
-    },
     "completionProvider": {
       "triggerCharacters": [
         "."
       ]
     },
-    "definitionProvider": {},
+    "definitionProvider": true,
     "documentFormattingProvider": true,
     "executeCommandProvider": {
       "commands": [
-        "gnols.gnofmt",
-        "gnols.test"
+        "gnopls.version"
       ]
     },
     "hoverProvider": true,
-    "implementationProvider": {},
-    "referencesProvider": {},
-    "renameProvider": {},
     "textDocumentSync": {
       "change": 1,
       "openClose": true,
@@ -52,9 +45,18 @@ cmp output/didChangeConfiguration.json expected/didChangeConfiguration.json
         "includeText": true
       }
     }
+  },
+  "serverInfo": {
+    "name": "gnopls",
+    "version": "v0.1.0-local"
   }
 }
 -- expected/initialized.json --
 null
 -- expected/didChangeConfiguration.json --
-null
+{
+  "error": {
+    "code": -32601,
+    "message": "JSON-RPC method not found"
+  }
+}

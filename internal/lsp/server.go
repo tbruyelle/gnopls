@@ -22,6 +22,7 @@ type server struct {
 	snapshot        *Snapshot
 	completionStore *CompletionStore
 	cache           *Cache
+	initialized     bool
 
 	formatOpt tools.FormattingOption
 }
@@ -48,11 +49,28 @@ func BuildServerHandler(conn jsonrpc2.Conn, e *env.Env) jsonrpc2.Handler {
 }
 
 func (s *server) ServerHandler(ctx context.Context, reply jsonrpc2.Replier, req jsonrpc2.Request) error {
+	if req.Method() == protocol.MethodInitialize {
+		err := s.Initialize(ctx, reply, req)
+		if err != nil {
+			return err
+		}
+		s.initialized = true
+		return nil
+	}
+	if !s.initialized {
+		return replyErr(ctx, reply, jsonrpc2.NewError(jsonrpc2.ServerNotInitialized, "server not initialized"))
+	}
 	switch req.Method() {
+	// NOTE when add new method, also add related capabilities in the initialize
+	// response
+	// TODO handle workspace/executeCommand with `gnopls.test` (see gnols.test)
+	// TODO handle textDocument/codeLense
+	// TODO handle textDocument/implementation
+	// TODO handle textDocument/referrences
+	// TODO handle textDocument/rename
+	// TODO replace all strings with their equivalent defined in the protocol pkg
 	case "exit":
 		return s.Exit(ctx, reply, req)
-	case "initialize":
-		return s.Initialize(ctx, reply, req)
 	case "initialized":
 		return s.Initialized(ctx, reply, req)
 	case "shutdown":
