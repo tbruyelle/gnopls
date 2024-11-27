@@ -47,8 +47,8 @@ func Hello() {
     "newText": "package foo\n\nimport \"gno.land/p/demo/ufmt\"\n\nfunc Hello() {\n\tufmt.Sprintf()\n}\n",
     "range": {
       "end": {
-        "character": 0,
-        "line": 5
+        "character": 2147483647,
+        "line": 2147483647
       },
       "start": {
         "character": 0,

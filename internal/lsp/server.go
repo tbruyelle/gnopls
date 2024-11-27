@@ -11,7 +11,6 @@ import (
 	"go.lsp.dev/protocol"
 
 	"github.com/gnolang/gnopls/internal/env"
-	"github.com/gnolang/gnopls/internal/tools"
 	"github.com/gnolang/gnopls/internal/version"
 )
 
@@ -23,8 +22,6 @@ type server struct {
 	completionStore *CompletionStore
 	cache           *Cache
 	initialized     bool
-
-	formatOpt tools.FormattingOption
 }
 
 func BuildServerHandler(conn jsonrpc2.Conn, e *env.Env) jsonrpc2.Handler {
@@ -41,8 +38,6 @@ func BuildServerHandler(conn jsonrpc2.Conn, e *env.Env) jsonrpc2.Handler {
 		snapshot:        NewSnapshot(),
 		completionStore: InitCompletionStore(dirs),
 		cache:           NewCache(),
-
-		formatOpt: tools.Gofumpt,
 	}
 	env.GlobalEnv = e
 	return jsonrpc2.ReplyHandler(server.ServerHandler)
