@@ -63,28 +63,28 @@ func (s *server) ServerHandler(ctx context.Context, reply jsonrpc2.Replier, req 
 	// TODO handle textDocument/implementation
 	// TODO handle textDocument/referrences
 	// TODO handle textDocument/rename
-	// TODO replace all strings with their equivalent defined in the protocol pkg
-	case "exit":
+	// TODO handle workspace/didChangeConfiguration
+	case protocol.MethodExit:
 		return s.Exit(ctx, reply, req)
-	case "initialized":
+	case protocol.MethodInitialized:
 		return s.Initialized(ctx, reply, req)
-	case "shutdown":
+	case protocol.MethodShutdown:
 		return s.Shutdown(ctx, reply, req)
-	case "textDocument/didChange":
+	case protocol.MethodTextDocumentDidChange:
 		return s.DidChange(ctx, reply, req)
-	case "textDocument/didClose":
+	case protocol.MethodTextDocumentDidClose:
 		return s.DidClose(ctx, reply, req)
-	case "textDocument/didOpen":
+	case protocol.MethodTextDocumentDidOpen:
 		return s.DidOpen(ctx, reply, req)
-	case "textDocument/didSave":
+	case protocol.MethodTextDocumentDidSave:
 		return s.DidSave(ctx, reply, req)
-	case "textDocument/formatting":
+	case protocol.MethodTextDocumentFormatting:
 		return s.Formatting(ctx, reply, req)
-	case "textDocument/hover":
+	case protocol.MethodTextDocumentHover:
 		return s.Hover(ctx, reply, req)
-	case "textDocument/completion":
+	case protocol.MethodTextDocumentCompletion:
 		return s.Completion(ctx, reply, req)
-	case "textDocument/definition":
+	case protocol.MethodTextDocumentDefinition:
 		return s.Definition(ctx, reply, req)
 	default:
 		return jsonrpc2.MethodNotFoundHandler(ctx, reply, req)
