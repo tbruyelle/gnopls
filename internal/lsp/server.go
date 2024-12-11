@@ -23,7 +23,8 @@ type server struct {
 	completionStore *CompletionStore
 	cache           *Cache
 
-	initialized atomic.Bool
+	initialized     atomic.Bool
+	workspaceFolder string
 }
 
 func BuildServerHandler(conn jsonrpc2.Conn, e *env.Env) jsonrpc2.Handler {
@@ -90,6 +91,15 @@ func (s *server) Initialize(ctx context.Context, reply jsonrpc2.Replier, req jso
 	if err := json.Unmarshal(req.Params(), &params); err != nil {
 		return sendParseError(ctx, reply, err)
 	}
+	if len(params.WorkspaceFolders) > 0 {
+		s.workspaceFolder = params.WorkspaceFolders[0].Name
+	}
+	if s.workspaceFolder == "" {
+		// Not all LSP client have migrated to the latest WorkspaceFolders, some
+		// like vim-lsp are still using the deprecated one RootUri.
+		s.workspaceFolder = params.RootURI.Filename() //nolint:staticcheck
+	}
+	slog.Info("Initialize", "params", params, "workspaceFolder", s.workspaceFolder)
 
 	return reply(ctx, protocol.InitializeResult{
 		ServerInfo: &protocol.ServerInfo{
