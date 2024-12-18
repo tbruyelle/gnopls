@@ -82,7 +82,7 @@ func (s *server) parseErrors(output, cmd string) ([]ErrorInfo, error) {
 			return nil, fmt.Errorf("parseErrors '%s': %w", match, err)
 		}
 		msg := strings.TrimSpace(match[4])
-		slog.Info("parseErrors", "path", path, "line", line, "column", column, "msg", msg)
+		slog.Debug("parseErrors", "path", path, "line", line, "column", column, "msg", msg)
 		errors = append(errors, ErrorInfo{
 			FileName: filepath.Join(s.workspaceFolder, path),
 			Line:     line,
