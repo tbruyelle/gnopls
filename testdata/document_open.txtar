@@ -70,11 +70,11 @@ func Bye() {
           },
           "end": {
             "line": 2,
-            "character": 4294967294
+            "character": 6
           }
         },
         "severity": 1,
-        "code": "typecheck",
+        "code": "transpile",
         "source": "gnopls",
         "message": "undefined: X"
       },
@@ -86,11 +86,11 @@ func Bye() {
           },
           "end": {
             "line": 5,
-            "character": 4294967294
+            "character": 1
           }
         },
         "severity": 1,
-        "code": "typecheck",
+        "code": "transpile",
         "source": "gnopls",
         "message": "declared and not used: y"
       }
