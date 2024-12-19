@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"go/ast"
 	"go/parser"
+	"go/scanner"
 	"go/token"
 	"log/slog"
 	"strings"
@@ -39,51 +40,49 @@ type GnoFile struct {
 
 // contains parsed gno file.
 type ParsedGnoFile struct {
-	URI  protocol.DocumentURI
-	File *ast.File
-	Fset *token.FileSet
+	URI    protocol.DocumentURI
+	File   *ast.File
+	Fset   *token.FileSet
+	Errors scanner.ErrorList
 
 	Src []byte
 }
 
 // ParseGno reads src from disk and parse it
-func (f *GnoFile) ParseGno(ctx context.Context) (*ParsedGnoFile, error) {
+func (f *GnoFile) ParseGno(ctx context.Context) *ParsedGnoFile {
 	fset := token.NewFileSet()
 	ast, err := parser.ParseFile(fset, f.URI.Filename(), nil, parser.ParseComments)
+	var parseErr scanner.ErrorList
 	if err != nil {
-		return nil, err
+		parseErr = err.(scanner.ErrorList) //nolint:errcheck,errorlint
 	}
 
-	pgf := &ParsedGnoFile{
-		URI: f.URI,
-
-		File: ast,
-		Fset: fset,
-		Src:  f.Src,
+	return &ParsedGnoFile{
+		URI:    f.URI,
+		File:   ast,
+		Fset:   fset,
+		Errors: parseErr,
+		Src:    f.Src,
 	}
-
-	return pgf, nil
 }
 
 // ParseGno2 parses src from GnoFile instead of reading from disk
 // Right now it's only used in `completion.go`
 // TODO: Replace content of `ParseGno` with `ParseGno2`
-func (f *GnoFile) ParseGno2(ctx context.Context) (*ParsedGnoFile, error) {
+func (f *GnoFile) ParseGno2(ctx context.Context) *ParsedGnoFile {
 	fset := token.NewFileSet()
 	ast, err := parser.ParseFile(fset, f.URI.Filename(), f.Src, parser.ParseComments)
+	var parseErr scanner.ErrorList
 	if err != nil {
-		return nil, err
+		parseErr = err.(scanner.ErrorList) //nolint:errcheck,errorlint
 	}
-
-	pgf := &ParsedGnoFile{
-		URI: f.URI,
-
-		File: ast,
-		Fset: fset,
-		Src:  f.Src,
+	return &ParsedGnoFile{
+		URI:    f.URI,
+		File:   ast,
+		Fset:   fset,
+		Errors: parseErr,
+		Src:    f.Src,
 	}
-
-	return pgf, nil
 }
 
 // contains parsed gno.mod file.

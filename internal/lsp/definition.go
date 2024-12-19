@@ -31,10 +31,7 @@ func (s *server) Definition(ctx context.Context, reply jsonrpc2.Replier, req jso
 		return reply(ctx, nil, errors.New("snapshot not found"))
 	}
 	// Try parsing current file
-	pgf, err := file.ParseGno(ctx)
-	if err != nil {
-		return reply(ctx, nil, errors.New("cannot parse gno file"))
-	}
+	pgf := file.ParseGno(ctx)
 	// Load pkg from cache
 	pkg, ok := s.cache.pkgs.Get(filepath.Dir(string(params.TextDocument.URI.Filename())))
 	if !ok {

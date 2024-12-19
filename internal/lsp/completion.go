@@ -17,13 +17,14 @@ import (
 	"time"
 	"unicode"
 
-	"github.com/gnolang/gno/gnovm/pkg/gnomod"
-	"github.com/gnolang/gnopls/internal/builtin"
 	cmap "github.com/orcaman/concurrent-map/v2"
 	"go.lsp.dev/jsonrpc2"
 	"go.lsp.dev/protocol"
 	"go.lsp.dev/uri"
 	"golang.org/x/tools/go/ast/astutil"
+
+	"github.com/gnolang/gno/gnovm/pkg/gnomod"
+	"github.com/gnolang/gnopls/internal/builtin"
 )
 
 type CompletionStore struct {
@@ -165,10 +166,7 @@ func (s *server) Completion(ctx context.Context, reply jsonrpc2.Replier, req jso
 		return reply(ctx, nil, errors.New("snapshot not found"))
 	}
 	// Try parsing current file
-	pgf, err := file.ParseGno2(ctx)
-	if err != nil {
-		return reply(ctx, nil, errors.New("cannot parse gno file"))
-	}
+	pgf := file.ParseGno2(ctx)
 
 	// Calculate offset and line
 	offset := file.PositionToOffset(params.Position)
