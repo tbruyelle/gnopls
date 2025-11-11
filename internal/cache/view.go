@@ -853,13 +853,13 @@ func defineView(ctx context.Context, fs file.Source, folder *Folder, forFile fil
 
 	// goworkFromEnv := false
 	// if folder.Env.ExplicitGOWORK != "off" && folder.Env.ExplicitGOWORK != "" {
-	// 	goworkFromEnv = true
-	// 	def.gowork = protocol.URIFromPath(folder.Env.ExplicitGOWORK)
+	// goworkFromEnv = true
+	// def.gowork = protocol.URIFromPath(folder.Env.ExplicitGOWORK)
 	// } else {
-	// 	def.gowork, err = findRootPattern(ctx, dirURI, "go.work", fs)
-	// 	if err != nil {
-	// 		return nil, err
-	// 	}
+	def.gowork, err = findRootPattern(ctx, dirURI, "gnowork.toml", fs)
+	if err != nil {
+		return nil, err
+	}
 	// }
 
 	// When deriving the best view for a given file, we only want to search
@@ -937,6 +937,12 @@ func defineView(ctx context.Context, fs file.Source, folder *Folder, forFile fil
 	// 	}
 	// 	return def, nil
 	// }
+
+	if def.gowork != "" {
+		def.root = def.gowork.Dir()
+		def.typ = GOPATHView
+		return def, nil
+	}
 
 	// Otherwise, use the active module, if in module mode.
 	//
